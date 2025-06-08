@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -83,28 +83,31 @@
                     <option value="Não">Pendente</option>
                 </select>
             </div>
+            <div>
+                <label for="currencyFilter" class="block text-sm font-medium text-gray-700">Moeda:</label>
+                <select id="currencyFilter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#2f4b7c] focus:ring-[#2f4b7c]">
+                    <option value="USD">$ Dólar</option>
+                    <option value="BRL">R$ Real</option>
+                </select>
+            </div>
             <div class="flex flex-col md:flex-row gap-2 mt-4 md:mt-0 lg:col-span-1">
                 <button id="applyFiltersBtn" class="bg-[#2f4b7c] text-white py-2 px-4 rounded-md hover:bg-[#003f5c] transition duration-300 ease-in-out">Aplicar Filtros</button>
                 <button id="clearFiltersBtn" class="bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-gray-500 transition duration-300 ease-in-out">Limpar Filtros</button>
             </div>
         </section>
 
-        <section id="kpis" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
+        <section id="kpis" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
                 <h2 class="text-lg font-semibold text-gray-600">Total Pago (Fornecedores)</h2>
-                <p id="totalPago" class="text-4xl font-bold text-[#2f4b7c] mt-2">R$0,00</p>
+                <p id="totalPago" class="text-4xl font-bold text-[#2f4b7c] mt-2">$0.00</p>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
                 <h2 class="text-lg font-semibold text-gray-600">Total Pendente (Fornecedores)</h2>
-                <p id="totalPendente" class="text-4xl font-bold text-[#d45087]">R$0,00</p>
+                <p id="totalPendente" class="text-4xl font-bold text-[#d45087] mt-2">$0.00</p>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
                 <h2 class="text-lg font-semibold text-gray-600">Total Desembolsado (Estimado)</h2>
-                <p id="totalGeral" class="text-4xl font-bold text-[#003f5c]">R$0,00</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
-                <h2 class="text-lg font-semibold text-gray-600">Fator Conversão Média</h2>
-                <p id="taxaConversao" class="text-4xl font-bold text-[#ff7c43]">0.00</p>
+                <p id="totalGeral" class="text-4xl font-bold text-[#003f5c] mt-2">$0.00</p>
             </div>
         </section>
 
@@ -181,47 +184,48 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     const rawData = [
-        { "Data": "15/05/2025", "Produto": "BICICLETA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 11225.08, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.790571, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
-        { "Data": "15/05/2025", "Produto": "BICICLETA", "Meio PGTO": "Transferência", "Valor (RS) CO": 25884.19, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.722551, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
-        { "Data": "10/06/2025", "Produto": "BICICLETA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 26686.82, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
-        { "Data": "11/06/2025", "Produto": "BICICLETA", "Meio PGTO": "Transferência", "Valor (RS) CO": 62269.25, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
-        { "Data": "23/04/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Transferência", "Valor (RS) CO": 5864.15, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.003061, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
-        { "Data": "05/06/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Alibaba", "Valor (RS) CO": 14429.76, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.915436, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
-        { "Data": "23/04/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Transferência", "Valor (RS) CO": 22385.86, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.729035, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
-        { "Data": "05/06/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Transferência", "Valor (RS) CO": 51195.91, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.616212, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
-        { "Data": "17/04/2025", "Produto": "ARANDELA", "Meio PGTO": "Transferência", "Valor (RS) CO": 4610.35, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": null, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
-        { "Data": "23/04/2025", "Produto": "ARANDELA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 9271.12, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.733532, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
-        { "Data": "05/06/2025", "Produto": "ARANDELA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 10572.80, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
-        { "Data": "05/06/2025", "Produto": "ARANDELA", "Meio PGTO": "Transferência", "Valor (RS) CO": 21194.87, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.617511, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
-        { "Data": "17/03/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Transferência", "Valor (RS) CO": 4885.40, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.769794, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
-        { "Data": "08/05/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Transferência", "Valor (RS) CO": 12045.78, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.917325, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
-        { "Data": "13/03/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Alibaba", "Valor (RS) CO": 5287.71, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.828601, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
-        { "Data": "09/05/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Transferência", "Valor (RS) CO": 12010.89, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.674079, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
-        { "Data": "17/03/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Transferência", "Valor (RS) CO": 3121.12, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.020679, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
-        { "Data": "07/05/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Transferência", "Valor (RS) CO": 7153.72, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.914120, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
-        { "Data": "17/03/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 11783.49, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 3.742440, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
-        { "Data": "08/05/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Transferência", "Valor (RS) CO": 27313.43, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.704560, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
-        { "Data": "24/03/2025", "Produto": "CHAPÉU PESCADOR NOVO MODELO", "Meio PGTO": "Alibaba", "Valor (RS) CO": 13293.76, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.830596, "imageUrl": "https://i.ibb.co/0V1CMMJ1/alt000pre.png" },
-        { "Data": "26/03/2025", "Produto": "CHAPÉU PESCADOR NOVO MODELO", "Meio PGTO": "Alibaba", "Valor (RS) CO": 6893.25, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.802399, "imageUrl": "https://i.ibb.co/0V1CMMJ1/alt000pre.png" },
-        { "Data": "13/03/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Transferência", "Valor (RS) CO": 3501.42, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.078854, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
-        { "Data": "13/05/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Transferência", "Valor (RS) CO": 7755.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.770089, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
-        { "Data": "12/03/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 3914.44, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.835806, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
-        { "Data": "29/05/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Transferência", "Valor (RS) CO": 8917.33, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.687071, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
-        { "Data": "15/04/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Transferência", "Valor (RS) CO": 13025.87, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.162242, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
-        { "Data": "27/07/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Transferência", "Valor (RS) CO": 114126.78, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 6.000000, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
-        { "Data": "15/04/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Alibaba", "Valor (RS) CO": 29031.21, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.886010, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
-        { "Data": "24/07/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Transferência", "Valor (RS) CO": 266360.64, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 6.000000, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
-        { "Data": "15/05/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 8899.56, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
-        { "Data": "15/05/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Transferência", "Valor (RS) CO": 20765.64, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
-        { "Data": "03/08/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Alibaba", "Valor (RS) CO": 80096.04, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
-        { "Data": "03/08/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Transferência", "Valor (RS) CO": 186890.76, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
-        { "Data": "15/05/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Alibaba", "Valor (RS) CO": 2974.25, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" },
-        { "Data": "15/05/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Alibaba", "Valor (RS) CO": 26749.01, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" },
-        { "Data": "13/08/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Transferência", "Valor (RS) CO": 6939.88, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" },
-        { "Data": "13/08/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Transferência", "Valor (RS) CO": 64051.99, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" }
+        { "Data": "15/05/2025", "Produto": "BICICLETA", "Meio PGTO": "Alibaba", "Valor": 1938.51, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.790571, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
+        { "Data": "15/05/2025", "Produto": "BICICLETA", "Meio PGTO": "Transferência", "Valor": 4523.19, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.722551, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
+        { "Data": "10/06/2025", "Produto": "BICICLETA", "Meio PGTO": "Alibaba", "Valor": 4523.19, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
+        { "Data": "11/06/2025", "Produto": "BICICLETA", "Meio PGTO": "Transferência", "Valor": 10554.11, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/rRrBPZbm/3-XTREME-1.png" },
+        { "Data": "23/04/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Transferência", "Valor": 976.86, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.003061, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
+        { "Data": "05/06/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Alibaba", "Valor": 2439.34, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.915436, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
+        { "Data": "23/04/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Transferência", "Valor": 3907.44, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.729035, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
+        { "Data": "05/06/2025", "Produto": "EXPOSITOR", "Meio PGTO": "Transferência", "Valor": 9117.36, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.616212, "imageUrl": "https://i.ibb.co/trpmXZZ/expositor-giratorio.jpg" },
+        { "Data": "17/04/2025", "Produto": "ARANDELA", "Meio PGTO": "Transferência", "Valor": 768.00, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": null, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
+        { "Data": "23/04/2025", "Produto": "ARANDELA", "Meio PGTO": "Alibaba", "Valor": 1417.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.733532, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
+        { "Data": "05/06/2025", "Produto": "ARANDELA", "Meio PGTO": "Alibaba", "Valor": 1792.00, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
+        { "Data": "05/06/2025", "Produto": "ARANDELA", "Meio PGTO": "Transferência", "Valor": 3773.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.617511, "imageUrl": "https://i.ibb.co/zWGXqztZ/Arandela.png" },
+        { "Data": "17/03/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Transferência", "Valor": 846.72, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.769794, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
+        { "Data": "08/05/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Transferência", "Valor": 2035.68, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.917325, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
+        { "Data": "13/03/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Alibaba", "Valor": 907.20, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.828601, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
+        { "Data": "09/05/2025", "Produto": "ALM FONE DE OUVIDO", "Meio PGTO": "Transferência", "Valor": 2116.80, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.674079, "imageUrl": "https://i.ibb.co/p6Pr8qyh/Almofada-Fone-de-ouvido.png" },
+        { "Data": "17/03/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Transferência", "Valor": 518.40, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.020679, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
+        { "Data": "07/05/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Transferência", "Valor": 1209.60, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.914120, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
+        { "Data": "17/03/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Alibaba", "Valor": 2052.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 3.742440, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
+        { "Data": "08/05/2025", "Produto": "CHAPÉU SOPHIA", "Meio PGTO": "Transferência", "Valor": 4788.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.704560, "imageUrl": "https://i.ibb.co/LhhM8ywq/Hb447b99475104de49e05ad0841d5fcfb-H.jpg" },
+        { "Data": "24/03/2025", "Produto": "CHAPÉU PESCADOR NOVO MODELO", "Meio PGTO": "Alibaba", "Valor": 2280.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.830596, "imageUrl": "https://i.ibb.co/0V1CMMJ1/alt000pre.png" },
+        { "Data": "26/03/2025", "Produto": "CHAPÉU PESCADOR NOVO MODELO", "Meio PGTO": "Alibaba", "Valor": 1188.00, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.802399, "imageUrl": "https://i.ibb.co/0V1CMMJ1/alt000pre.png" },
+        { "Data": "13/03/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Transferência", "Valor": 576.00, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.078854, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
+        { "Data": "13/05/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Transferência", "Valor": 1344.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.770089, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
+        { "Data": "12/03/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Alibaba", "Valor": 672.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.835806, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
+        { "Data": "29/05/2025", "Produto": "LAMINA TESOURA", "Meio PGTO": "Transferência", "Valor": 1568.00, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.687071, "imageUrl": "https://i.ibb.co/RkDdzNMT/L-mina-Tesoura.png" },
+        { "Data": "15/04/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Transferência", "Valor": 2113.87, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 6.162242, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
+        { "Data": "27/07/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Transferência", "Valor": 19021.13, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 6.000000, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
+        { "Data": "15/04/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Alibaba", "Valor": 4932.24, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.886010, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
+        { "Data": "24/07/2025", "Produto": "FOGÃO ELÉTRICO 02 BOCAS", "Meio PGTO": "Transferência", "Valor": 44393.44, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 6.000000, "imageUrl": "https://i.ibb.co/XfzGFSTb/Screenshot-8.png" },
+        { "Data": "15/05/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Alibaba", "Valor": 1508.40, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
+        { "Data": "15/05/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Transferência", "Valor": 3519.60, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
+        { "Data": "03/08/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Alibaba", "Valor": 13575.60, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
+        { "Data": "03/08/2025", "Produto": "CHURRASQUEIRA E FOGÃO ELÉTRICO 01 BOCA", "Meio PGTO": "Transferência", "Valor": 31676.40, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/B5wfbmXf/Varios-1.png" },
+        { "Data": "15/05/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Alibaba", "Valor": 504.11, "FORMA DE PAGTO": "OFF", "Efetuado?": "Sim", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" },
+        { "Data": "15/05/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Alibaba", "Valor": 4533.73, "FORMA DE PAGTO": "OFF", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" },
+        { "Data": "13/08/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Transferência", "Valor": 1176.25, "FORMA DE PAGTO": "IN", "Efetuado?": "Sim", "Fator Conversão": 3.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" },
+        { "Data": "13/08/2025", "Produto": "CHALEIRA ELETRICA 2 ORDEM", "Meio PGTO": "Transferência", "Valor": 10866.27, "FORMA DE PAGTO": "IN", "Efetuado?": "Não", "Fator Conversão": 5.900000, "imageUrl": "https://i.ibb.co/mrc9CBjC/Chaleira.png" }
     ];
 
     let currentCharts = {};
+    let currentCurrency = 'USD'; // Default currency
 
     const cleanAndStandardizeData = (dataArray) => {
         return dataArray.map(item => {
@@ -241,7 +245,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const formattedData = cleanAndStandardizeData(rawData);
 
     const formatCurrency = (value) => {
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        if (currentCurrency === 'USD') {
+            return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        } else {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
     };
     
     const palette = {
@@ -267,6 +275,15 @@ document.addEventListener('DOMContentLoaded', () => {
                           return label.join(' ');
                         }
                         return label;
+                    },
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        // Apply currency formatting to the value in the tooltip
+                        const value = context.parsed.y;
+                        return label + formatCurrency(value);
                     }
                 }
             }
@@ -295,6 +312,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return lines;
     }
 
+    function getConvertedValue(item) {
+        if (currentCurrency === 'BRL' && item['Fator Conversão'] != null) {
+            return item.Valor * item['Fator Conversão'];
+        }
+        return item.Valor;
+    }
+
     function filterData() {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
@@ -302,6 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const paymentMethodFilter = document.getElementById('paymentMethodFilter').value;
         const paymentFormFilter = document.getElementById('paymentFormFilter').value;
         const statusFilter = document.getElementById('statusFilter').value;
+        currentCurrency = document.getElementById('currencyFilter').value; // Update current currency based on filter
 
         return formattedData.filter(item => {
             const itemDate = new Date(item.Data.split('/').reverse().join('-'));
@@ -319,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function processData(filteredArray, groupBy) {
         return filteredArray.reduce((acc, item) => {
             const key = item[groupBy];
-            const value = item['Valor (RS) CO'];
+            const value = getConvertedValue(item); 
             acc[key] = (acc[key] || 0) + value;
             return acc;
         }, {});
@@ -329,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return filteredArray.reduce((acc, item) => {
             const pKey = item[primaryKey];
             const sKey = item[secondaryKey];
-            const value = item['Valor (RS) CO'];
+            const value = getConvertedValue(item); 
 
             if (!acc[pKey]) {
                 acc[pKey] = {};
@@ -343,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentCharts.statusPagamentos) currentCharts.statusPagamentos.destroy();
         const statusData = dataToChart.reduce((acc, item) => {
             const key = item['Efetuado?'];
-            const value = item['Valor (RS) CO'];
+            const value = getConvertedValue(item); 
             acc[key] = (acc[key] || 0) + value;
             return acc;
         }, {});
@@ -415,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Valor Total (R$)',
+                    label: `Valor Total (${currentCurrency === 'USD' ? '$' : 'R$'})`, 
                     data: values,
                     backgroundColor: chartColors,
                 }]
@@ -430,7 +455,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         beginAtZero: true,
                         ticks: {
                             callback: function(value) {
-                                return 'R$ ' + (value / 1000) + 'k';
+                                // Format based on selected currency
+                                return formatCurrency(value);
                             }
                         }
                     }
@@ -454,7 +480,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const product = item.Produto;
             categories.add(product);
-            monthlyExpenditure[yearMonthKey][product] = (monthlyExpenditure[yearMonthKey][product] || 0) + item['Valor (RS) CO'];
+            const value = getConvertedValue(item); // Use converted value
+            monthlyExpenditure[yearMonthKey][product] = (monthlyExpenditure[yearMonthKey][product] || 0) + value;
         });
 
         const sortedYearMonths = Object.keys(monthlyExpenditure).sort(); 
@@ -469,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const datasets = sortedCategories.map((category, index) => {
             return {
                 label: wrapLabel(category),
-                data: sortedYearMonths.map(month => monthlyExpenditure[month][category] || 0),
+                data: sortedYearMonths.map(yearMonth => monthlyExpenditure[yearMonth][category] || 0),
                 backgroundColor: chartColors[index % chartColors.length],
             };
         });
@@ -494,7 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         beginAtZero: true,
                         ticks: {
                             callback: function(value) {
-                                return 'R$ ' + (value / 1000) + 'k';
+                                return formatCurrency(value); // Format based on selected currency
                             }
                         }
                     }
@@ -534,25 +561,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 maintainAspectRatio: false,
                 scales: {
                     x: { stacked: true },
-                    y: { stacked: true, beginAtZero: true }
+                    y: { stacked: true, beginAtZero: true,
+                         ticks: {
+                            callback: function(value) {
+                                return formatCurrency(value); // Format based on selected currency
+                            }
+                        }
+                    }
                 }
             }
         });
     }
 
     function calculateKPIs(dataToChart) {
-        const totalPagoFornecedores = dataToChart.filter(d => d['Efetuado?'] === 'Sim').reduce((sum, item) => sum + item['Valor (RS) CO'], 0);
-        const totalPendenteFornecedores = dataToChart.filter(d => d['Efetuado?'] === 'Não').reduce((sum, item) => sum + item['Valor (RS) CO'], 0);
+        const totalPagoFornecedores = dataToChart.filter(d => d['Efetuado?'] === 'Sim').reduce((sum, item) => sum + getConvertedValue(item), 0);
+        const totalPendenteFornecedores = dataToChart.filter(d => d['Efetuado?'] === 'Não').reduce((sum, item) => sum + getConvertedValue(item), 0);
         
-        const totalDesembolsado = dataToChart.reduce((sum, item) => sum + item['Valor (RS) CO'], 0);
-
-        const fatores = dataToChart.map(d => d['Fator Conversão']).filter(f => f != null);
-        const taxaConversaoMedia = fatores.length > 0 ? fatores.reduce((sum, item) => sum + item, 0) / fatores.length : 0;
+        const totalDesembolsado = dataToChart.reduce((sum, item) => sum + getConvertedValue(item), 0);
 
         document.getElementById('totalPago').textContent = formatCurrency(totalPagoFornecedores);
         document.getElementById('totalPendente').textContent = formatCurrency(totalPendenteFornecedores);
         document.getElementById('totalGeral').textContent = formatCurrency(totalDesembolsado);
-        document.getElementById('taxaConversao').textContent = taxaConversaoMedia.toFixed(2);
     }
 
     function updateAllCharts() {
@@ -617,7 +646,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         dataToChart.forEach(item => {
-            productTotals[item.Produto] = (productTotals[item.Produto] || 0) + item['Valor (RS) CO'];
+            // Use 'Valor' for calculations in gallery
+            productTotals[item.Produto] = (productTotals[item.Produto] || 0) + getConvertedValue(item); 
         });
 
 
@@ -651,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('paymentMethodFilter').value = 'Todos';
         document.getElementById('paymentFormFilter').value = 'Todos';
         document.getElementById('statusFilter').value = 'Todos';
+        document.getElementById('currencyFilter').value = 'USD'; // Reset currency filter
         updateAllCharts();
     });
 
